@@ -2,7 +2,7 @@
 
 A [Polybar](https://github.com/jaagr/polybar) module to show unread messages from Gmail.
 
-![preview](https://github.com/vyachkonovalov/polybar-gmail/raw/master/preview.png)
+![preview](https://github.com/kakawait/polybar-gmail/raw/master/preview.png)
 
 ## Dependencies
 
@@ -21,7 +21,7 @@ You can change the icon or turn off sound, for more info see [script arguments](
 
 ```sh
 cd ~/.config/polybar
-curl -LO https://github.com/vyachkonovalov/polybar-gmail/archive/master.tar.gz
+curl -LO https://github.com/kakawait/polybar-gmail/archive/master.tar.gz
 tar zxf master.tar.gz && rm master.tar.gz
 mv polybar-gmail-master gmail
 ```
@@ -46,16 +46,18 @@ click-left = xdg-open https://mail.google.com
 
 `-l` or `--label` - set user's mailbox [label](https://developers.google.com/gmail/api/v1/reference/users/labels/list), default: INBOX
 
-`-p` or `--prefix` - set email icon, default: 
+`-p` or `--prefix-unread` - set email icon when there is at least one unread email, default: 
+
+`--prefix-read` - set email icon when there is no unread email, default: 
 
 `-c` or `--color` - set new email icon color, default: #e06c75
 
-`-ns` or `--nosound` - turn off new email sound
+`--nosound` - turn off new email sound
 
 ### Example
 
 ```sh
-./launch.py --label 'CATEGORY_PERSONAL' --prefix '✉' --color '#be5046' --nosound
+./launch.py --label 'CATEGORY_PERSONAL' --prefix-unread '✉' --color '#be5046' --no-sound
 ```
 
 ## Get list of all your mailbox labels

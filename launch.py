@@ -10,15 +10,17 @@ from httplib2 import ServerNotFoundError
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-l', '--label', default='INBOX')
-parser.add_argument('-p', '--prefix', default='\uf0e0')
+parser.add_argument('-p', '--prefix-unread', default='\uf0e0')
+parser.add_argument('--prefix-read', default='\uf0e0')
 parser.add_argument('-c', '--color', default='#e06c75')
-parser.add_argument('-ns', '--nosound', action='store_true')
+parser.add_argument('--no-sound', action='store_true')
 args = parser.parse_args()
 
 DIR = Path(__file__).resolve().parent
 CREDENTIALS_PATH = Path(DIR, 'credentials.json')
 
-unread_prefix = '%{F' + args.color + '}' + args.prefix + ' %{F-}'
+read_prefix = '%{F' + args.color + '}' + args.prefix_read + ' %{F-}'
+unread_prefix = '%{F' + args.color + '}' + args.prefix_unread + ' %{F-}'
 error_prefix = '%{F' + args.color + '}\uf06a %{F-}'
 count_was = 0
 
@@ -28,7 +30,7 @@ def print_count(count, is_odd=False):
     if count > 0:
         output = unread_prefix + tilde + str(count)
     else:
-        output = (args.prefix + ' ' + tilde).strip()
+        output = (read_prefix + ' ' + tilde).strip()
     print(output, flush=True)
 
 def update_count(count_was):
@@ -37,7 +39,7 @@ def update_count(count_was):
     labels = gmail.users().labels().get(userId='me', id=args.label).execute()
     count = labels['messagesUnread']
     print_count(count)
-    if not args.nosound and count_was < count and count > 0:
+    if not args.no_sound and count_was < count and count > 0:
         subprocess.run(['canberra-gtk-play', '-i', 'message'])
     return count
 
